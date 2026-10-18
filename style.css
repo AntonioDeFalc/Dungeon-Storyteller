@@ -1,0 +1,1561 @@
+/* ===================================================
+   1. VARIABILI CSS (PALETTE, TIPOGRAFIA, EFFETTI)
+   =================================================== */
+:root {
+  /* Sfondo e superfici (Palette Fable & Shadow) */
+  --color-app-bg: #edf2f9;
+  --color-surface: #ffffff;
+  --color-surface-low: #f4f7fb;
+  --color-surface-container: #e6eefb;
+  --color-surface-high: #dbe5f5;
+  --color-dark-panel: #121927;
+  --color-dark-panel-hover: #1b2438;
+
+  /* Accenti magici */
+  --color-gold: #f59e0b;
+  --color-gold-glow: rgba(245, 158, 11, 0.35);
+  --color-amber: #d97706;
+  --color-violet: #6366f1;
+  --color-violet-soft: #e0e7ff;
+  --color-emerald: #10b981;
+  --color-ruby: #ef4444;
+  --color-ruby-bg: #fee2e2;
+
+  /* Testi e sfumature neutre */
+  --color-text-main: #141c28;
+  --color-text-muted: #576477;
+  --color-text-dim: #8493a8;
+  --color-text-light: #f8fafc;
+
+  /* Bordi e contorni */
+  --color-border: rgba(20, 28, 40, 0.08);
+  --color-border-card: rgba(20, 28, 40, 0.06);
+
+  /* Tipografia */
+  --font-fantasy: 'Cinzel', serif;
+  --font-body: 'Inter', sans-serif;
+  --base-font-size: 14px;
+
+  /* Raggi di curvatura */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --radius-xl: 20px;
+  --radius-full: 9999px;
+
+  /* Ombre e Riflessi Diegetici */
+  --shadow-soft: 0 4px 16px rgba(18, 25, 39, 0.06);
+  --shadow-elevated: 0 8px 24px rgba(18, 25, 39, 0.1);
+  --shadow-forged: 0 4px 14px rgba(0, 0, 0, 0.25);
+  --shadow-rivet: inset 0 1px 1px rgba(255, 255, 255, 0.9), 0 1px 2px rgba(0, 0, 0, 0.3);
+  --shadow-rivet-dark: inset 0 1px 1px rgba(255, 255, 255, 0.35), 0 1px 2px rgba(0, 0, 0, 0.6);
+}
+
+/* ===================================================
+   2. RESET E IMPOSTAZIONI GLOBALI
+   =================================================== */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  background-color: #0c0e14;
+  font-family: var(--font-body);
+  font-size: var(--base-font-size);
+  color: var(--color-text-main);
+  display: flex;
+  justify-content: center;
+  min-height: 100vh;
+  line-height: 1.45;
+}
+
+/* Contenitore App Mobile Centrato */
+#app-container {
+  width: 100%;
+  max-width: 420px;
+  background-color: var(--color-app-bg);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  box-shadow: 0 0 40px rgba(0, 0, 0, 0.5);
+  overflow-x: hidden;
+}
+
+button {
+  font-family: inherit;
+  border: none;
+  cursor: pointer;
+  background: none;
+  transition: transform 0.1s ease, filter 0.15s ease, background-color 0.15s ease;
+}
+
+button:active {
+  transform: scale(0.98);
+}
+
+input, textarea, select {
+  font-family: inherit;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 8px 12px;
+  font-size: 13px;
+  outline: none;
+  background: #ffffff;
+  color: var(--color-text-main);
+}
+
+input:focus, textarea:focus, select:focus {
+  border-color: var(--color-violet);
+  box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2);
+}
+
+/* Icone Material Symbols */
+.icon {
+  font-family: 'Material Symbols Outlined';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 18px;
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  display: inline-block;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  vertical-align: middle;
+  font-variation-settings: 'FILL' 1;
+}
+
+/* Rivetti metallici agli angoli delle schede diegetiche */
+.rivet {
+  position: absolute;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #cbd5e1;
+  box-shadow: var(--shadow-rivet);
+  pointer-events: none;
+  z-index: 3;
+}
+
+.rivet-tl { top: 8px; left: 8px; }
+.rivet-tr { top: 8px; right: 8px; }
+.rivet-bl { bottom: 8px; left: 8px; }
+.rivet-br { bottom: 8px; right: 8px; }
+
+.rivet-dark {
+  background: #475569;
+  box-shadow: var(--shadow-rivet-dark);
+}
+
+/* ===================================================
+   3. SCHERMATE (SISTEMA A VISTE)
+   =================================================== */
+.screen {
+  display: none;
+  padding: 12px 16px 28px 16px;
+  flex-direction: column;
+  animation: fadeIn 0.2s ease-out;
+}
+
+.screen.active {
+  display: flex;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ===================================================
+   4. BARRA DI NAVIGAZIONE INTERNA (SUB-NAV)
+   =================================================== */
+#sub-nav {
+  background: #ffffff;
+  border-bottom: 1px solid var(--color-border);
+  padding: 8px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  box-shadow: var(--shadow-soft);
+}
+
+.sub-nav-left {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--color-text-main);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.sub-nav-back-btn {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 5px 9px;
+  border-radius: var(--radius-sm);
+  background: var(--color-surface-container);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--color-text-main);
+}
+
+.sub-nav-tabs {
+  display: flex;
+  gap: 4px;
+}
+
+.sub-nav-tab-btn {
+  padding: 5px 8px;
+  border-radius: var(--radius-sm);
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  background: transparent;
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.sub-nav-tab-btn.active {
+  background: var(--color-dark-panel);
+  color: var(--color-text-light);
+}
+
+/* ===================================================
+   5. COMPONENTI HOME SCREEN (4.1)
+   =================================================== */
+/* Micro-Header di stato */
+.status-micro-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 4px 0 10px 0;
+}
+
+.live-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  background: #ffffff;
+  padding: 5px 12px;
+  border-radius: var(--radius-full);
+  box-shadow: var(--shadow-soft);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  color: #0f172a;
+}
+
+.live-dot-wrap {
+  position: relative;
+  width: 8px;
+  height: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.live-dot-pulse {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background-color: var(--color-emerald);
+  opacity: 0.75;
+  animation: ping 1.8s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+.live-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: var(--color-emerald);
+  position: relative;
+}
+
+@keyframes ping {
+  75%, 100% {
+    transform: scale(2.2);
+    opacity: 0;
+  }
+}
+
+.version-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: var(--color-surface-container);
+  padding: 4px 10px;
+  border-radius: var(--radius-full);
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--color-text-muted);
+}
+
+/* Titolo Monumentale */
+.hero-header {
+  text-align: center;
+  padding: 2px 0 12px 0;
+}
+
+.hero-pretitle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  margin-bottom: 2px;
+}
+
+.hero-pretitle .icon {
+  font-size: 13px;
+  color: var(--color-amber);
+}
+
+.hero-title {
+  font-family: var(--font-fantasy);
+  font-size: 24px;
+  font-weight: 800;
+  color: #0f172a;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  line-height: 1.2;
+}
+
+.hero-subtitle {
+  font-size: 12px;
+  color: var(--color-text-muted);
+  margin-top: 3px;
+}
+
+/* Portale Runico Visivo */
+.portal-card {
+  position: relative;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background: #0d111b;
+  box-shadow: var(--shadow-elevated);
+  margin-bottom: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.portal-image-container {
+  position: relative;
+  width: 100%;
+  height: 200px;
+  overflow: hidden;
+}
+
+.portal-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.92;
+  transition: transform 0.8s ease;
+}
+
+.portal-card:hover .portal-img {
+  transform: scale(1.04);
+}
+
+.portal-vignette {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(13, 17, 27, 0.95) 0%, rgba(13, 17, 27, 0.2) 50%, rgba(13, 17, 27, 0.6) 100%);
+  pointer-events: none;
+}
+
+.portal-badge-top {
+  position: absolute;
+  top: 10px;
+  left: 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 10px;
+  border-radius: var(--radius-full);
+  background: rgba(12, 14, 20, 0.75);
+  backdrop-filter: blur(4px);
+  font-size: 10px;
+  font-weight: 700;
+  color: #fbbf24;
+  letter-spacing: 0.5px;
+  border: 1px solid rgba(251, 191, 36, 0.3);
+}
+
+.portal-footer-overlay {
+  position: absolute;
+  bottom: 10px;
+  left: 12px;
+  right: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: #f1f5f9;
+  font-size: 11px;
+}
+
+.portal-zone {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-weight: 600;
+}
+
+.difficulty-badge {
+  background: rgba(99, 102, 241, 0.3);
+  border: 1px solid rgba(129, 140, 248, 0.4);
+  color: #e0e7ff;
+  padding: 3px 8px;
+  border-radius: var(--radius-sm);
+  font-size: 10px;
+  font-weight: 700;
+}
+
+/* Pitch introduttivo */
+.pitch-banner {
+  background: #ffffff;
+  padding: 10px 14px;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-soft);
+  margin-bottom: 14px;
+  text-align: center;
+  font-size: 12px;
+  color: var(--color-text-muted);
+  border: 1px solid var(--color-border-card);
+}
+
+.pitch-banner strong {
+  color: var(--color-amber);
+}
+
+/* Card Ripresa Rapida */
+.resume-card {
+  position: relative;
+  background: var(--color-surface-container);
+  border-radius: var(--radius-lg);
+  padding: 14px;
+  box-shadow: var(--shadow-soft);
+  margin-bottom: 16px;
+  border: 1px solid rgba(18, 25, 39, 0.05);
+}
+
+.resume-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.resume-tag {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  font-weight: 700;
+  color: #0f172a;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.turn-pill {
+  background: #111827;
+  color: #ffffff;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: var(--radius-full);
+}
+
+.resume-body {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.resume-hero-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--color-text-main);
+}
+
+.resume-hero-desc {
+  font-size: 11px;
+  color: var(--color-text-muted);
+  margin-top: 2px;
+}
+
+.btn-gold-compact {
+  background: #111827;
+  color: #ffffff;
+  padding: 8px 14px;
+  border-radius: var(--radius-md);
+  font-size: 12px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  box-shadow: var(--shadow-forged);
+  white-space: nowrap;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.btn-gold-compact:hover {
+  background: #1f2937;
+}
+
+/* Menu Cardinale Forgiato */
+.menu-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+/* Bottone Primario Forgiato (Nuovo Personaggio) */
+.btn-hero-forged {
+  position: relative;
+  background: linear-gradient(135deg, #101624 0%, #171f30 100%);
+  color: #ffffff;
+  padding: 16px;
+  border-radius: var(--radius-lg);
+  text-align: left;
+  box-shadow: var(--shadow-elevated);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  overflow: hidden;
+  width: 100%;
+}
+
+.btn-hero-forged:hover {
+  filter: brightness(1.08);
+}
+
+.forged-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 4px;
+}
+
+.forged-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-fantasy);
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  color: #ffffff;
+}
+
+.forged-desc {
+  font-size: 11px;
+  color: #94a3b8;
+  line-height: 1.4;
+}
+
+/* Schede secondarie cesellate */
+.btn-chiseled-slate {
+  position: relative;
+  background: #ffffff;
+  border-radius: var(--radius-lg);
+  padding: 13px 14px;
+  box-shadow: var(--shadow-soft);
+  border: 1px solid var(--color-border-card);
+  text-align: left;
+  width: 100%;
+}
+
+.btn-chiseled-slate:hover {
+  background: var(--color-surface-low);
+}
+
+.chiseled-top-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 3px;
+}
+
+.chiseled-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--color-text-main);
+}
+
+.counter-chip {
+  background: var(--color-surface-container);
+  color: var(--color-text-muted);
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: var(--radius-full);
+}
+
+.chiseled-bottom-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.chiseled-desc {
+  font-size: 11px;
+  color: var(--color-text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding-right: 8px;
+}
+
+.btn-exit-game {
+  background: #ffffff;
+}
+
+/* Pannello Diagnostica 2x2 */
+.diagnostic-panel {
+  position: relative;
+  background: #ffffff;
+  border-radius: var(--radius-lg);
+  padding: 14px;
+  box-shadow: var(--shadow-soft);
+  border: 1px solid var(--color-border-card);
+  margin-bottom: 16px;
+}
+
+.diagnostic-title {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: var(--color-text-muted);
+  margin-bottom: 10px;
+}
+
+.diagnostic-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.diagnostic-cell {
+  background: var(--color-surface-low);
+  padding: 10px;
+  border-radius: var(--radius-md);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border: 1px solid var(--color-border-card);
+}
+
+.diag-label {
+  font-size: 10px;
+  color: var(--color-text-dim);
+  font-weight: 600;
+}
+
+.diag-val {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--color-text-main);
+  margin-top: 4px;
+}
+
+/* Footer diegetico */
+.game-footer {
+  text-align: center;
+  font-size: 10px;
+  color: var(--color-text-dim);
+  padding-top: 8px;
+  letter-spacing: 0.3px;
+}
+
+/* ===================================================
+   6. COMPONENTI SCHERMATA DI GIOCO (4.2)
+   =================================================== */
+/* Top Bar Eroe Compatta */
+.hero-top-bar {
+  background: #ffffff;
+  border-radius: var(--radius-lg);
+  padding: 12px 14px;
+  box-shadow: var(--shadow-soft);
+  border: 1px solid var(--color-border-card);
+  margin-bottom: 12px;
+}
+
+.hero-stats-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.hero-identity {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 700;
+  font-size: 14px;
+}
+
+.hero-ac-badge {
+  background: var(--color-surface-container);
+  padding: 3px 8px;
+  border-radius: var(--radius-sm);
+  font-size: 11px;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.hero-vitals-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.vital-item {
+  flex: 1;
+}
+
+.vital-label {
+  display: flex;
+  justify-content: space-between;
+  font-size: 10px;
+  font-weight: 700;
+  margin-bottom: 3px;
+  color: var(--color-text-muted);
+}
+
+.progress-bar-bg {
+  height: 7px;
+  border-radius: var(--radius-full);
+  background: #e2e8f0;
+  overflow: hidden;
+}
+
+.progress-bar-fill-hp {
+  height: 100%;
+  background: linear-gradient(to right, #10b981, #34d399);
+  border-radius: var(--radius-full);
+  transition: width 0.3s ease;
+}
+
+.spell-slots-row {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.spell-slot-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--color-violet);
+  box-shadow: 0 0 4px var(--color-violet);
+}
+
+.spell-slot-dot.empty {
+  background: #cbd5e1;
+  box-shadow: none;
+}
+
+/* Riquadro di Scena */
+.scene-frame {
+  position: relative;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  margin-bottom: 12px;
+  background: #0f172a;
+  box-shadow: var(--shadow-soft);
+  height: 150px;
+}
+
+.scene-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.85;
+}
+
+.scene-frame-overlay {
+  position: absolute;
+  bottom: 8px;
+  left: 10px;
+  right: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.scene-tag {
+  background: rgba(15, 23, 42, 0.8);
+  backdrop-filter: blur(4px);
+  padding: 3px 8px;
+  border-radius: var(--radius-sm);
+  font-size: 10px;
+  font-weight: 700;
+  color: #f1f5f9;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* Log Narrativo Dinamico */
+.narrative-card {
+  background: #ffffff;
+  border-radius: var(--radius-lg);
+  padding: 14px;
+  box-shadow: var(--shadow-soft);
+  border: 1px solid var(--color-border-card);
+  margin-bottom: 12px;
+}
+
+.narrative-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  border-bottom: 1px solid var(--color-border-card);
+  padding-bottom: 6px;
+}
+
+.narrative-title {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--color-amber);
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.btn-log-history {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.narrative-text {
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--color-text-main);
+}
+
+/* Scelte a Bivi (Branching Options) */
+.branch-choices-section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.branch-btn {
+  background: #ffffff;
+  border-radius: var(--radius-md);
+  padding: 11px 13px;
+  text-align: left;
+  border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-soft);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.branch-btn:hover {
+  border-color: var(--color-amber);
+  background: var(--color-surface-low);
+}
+
+.branch-btn-text {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-text-main);
+  line-height: 1.35;
+}
+
+.branch-dc-badge {
+  background: var(--color-surface-container);
+  color: var(--color-text-main);
+  font-size: 10px;
+  font-weight: 700;
+  padding: 3px 6px;
+  border-radius: var(--radius-sm);
+  white-space: nowrap;
+}
+
+/* Prompt Libero */
+.free-prompt-card {
+  background: #ffffff;
+  border-radius: var(--radius-lg);
+  padding: 12px;
+  box-shadow: var(--shadow-soft);
+  border: 1px solid var(--color-border-card);
+  margin-bottom: 14px;
+}
+
+.free-prompt-title {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--color-text-muted);
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.prompt-input-row {
+  display: flex;
+  gap: 8px;
+}
+
+.prompt-input {
+  flex: 1;
+}
+
+.btn-submit-action {
+  background: var(--color-dark-panel);
+  color: #ffffff;
+  padding: 8px 12px;
+  border-radius: var(--radius-md);
+  font-size: 12px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* Pulsanti rapidi cambio modalità */
+.quick-mode-switch-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.btn-mode-quick {
+  background: var(--color-surface-container);
+  padding: 10px;
+  border-radius: var(--radius-md);
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--color-text-main);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+/* ===================================================
+   7. MODALE RISOLUZIONE TIRI (4.3)
+   =================================================== */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(12, 14, 20, 0.7);
+  backdrop-filter: blur(4px);
+  z-index: 99;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+}
+
+.modal-overlay.active {
+  display: flex;
+}
+
+.modal-card {
+  background: #ffffff;
+  border-radius: var(--radius-xl);
+  padding: 20px;
+  width: 100%;
+  max-width: 360px;
+  box-shadow: var(--shadow-elevated);
+  border: 1px solid var(--color-border);
+  position: relative;
+  text-align: center;
+  animation: modalPop 0.25s ease-out;
+}
+
+@keyframes modalPop {
+  from { transform: scale(0.92); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+.action-recap-box {
+  background: var(--color-surface-low);
+  padding: 10px;
+  border-radius: var(--radius-md);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-text-main);
+  margin-bottom: 14px;
+  border: 1px solid var(--color-border-card);
+}
+
+.dice-visual-wrap {
+  margin: 10px 0;
+  display: flex;
+  justify-content: center;
+}
+
+.d20-poly {
+  width: 60px;
+  height: 60px;
+  background: linear-gradient(135deg, #1e293b, #0f172a);
+  color: #fbbf24;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-fantasy);
+  font-size: 24px;
+  font-weight: 800;
+  clip-path: polygon(50% 0%, 93% 25%, 93% 75%, 50% 100%, 7% 75%, 7% 25%);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  animation: rollD20 0.5s ease-out;
+}
+
+@keyframes rollD20 {
+  0% { transform: rotate(-180deg) scale(0.5); }
+  70% { transform: rotate(15deg) scale(1.1); }
+  100% { transform: rotate(0deg) scale(1); }
+}
+
+.dice-formula-text {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  margin-bottom: 10px;
+}
+
+.result-badge {
+  display: inline-block;
+  padding: 6px 16px;
+  border-radius: var(--radius-full);
+  font-size: 13px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  margin-bottom: 12px;
+}
+
+.result-badge.success {
+  background: #d1fae5;
+  color: #065f46;
+  border: 1px solid #10b981;
+}
+
+.result-badge.failure {
+  background: #fee2e2;
+  color: #991b1b;
+  border: 1px solid #ef4444;
+}
+
+.immediate-consequences {
+  font-size: 12px;
+  color: var(--color-text-main);
+  background: var(--color-surface-container);
+  padding: 10px;
+  border-radius: var(--radius-md);
+  margin-bottom: 16px;
+  line-height: 1.4;
+}
+
+.btn-modal-close {
+  width: 100%;
+  background: var(--color-dark-panel);
+  color: #ffffff;
+  padding: 10px;
+  border-radius: var(--radius-md);
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+/* ===================================================
+   8. COMBATTIMENTO A TURNI (4.4)
+   =================================================== */
+.enemy-card {
+  position: relative;
+  background: #ffffff;
+  border-radius: var(--radius-lg);
+  padding: 14px;
+  box-shadow: var(--shadow-soft);
+  border: 1px solid var(--color-border-card);
+  margin-bottom: 12px;
+}
+
+.enemy-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+}
+
+.enemy-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: #b91c1c;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.enemy-cr-badge {
+  background: #fee2e2;
+  color: #b91c1c;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: var(--radius-sm);
+}
+
+.initiative-track-card {
+  background: var(--color-surface-low);
+  padding: 8px 12px;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  font-size: 11px;
+  font-weight: 600;
+  border: 1px solid var(--color-border-card);
+}
+
+.turn-indicator-badge {
+  background: var(--color-emerald);
+  color: #ffffff;
+  padding: 2px 7px;
+  border-radius: var(--radius-full);
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.combat-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.combat-action-btn {
+  background: #ffffff;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 10px;
+  text-align: left;
+  box-shadow: var(--shadow-soft);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.combat-action-btn:hover {
+  background: var(--color-surface-low);
+  border-color: var(--color-violet);
+}
+
+.combat-btn-title {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--color-text-main);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.combat-btn-subtitle {
+  font-size: 10px;
+  color: var(--color-text-muted);
+}
+
+.combat-log-box {
+  background: #ffffff;
+  border-radius: var(--radius-md);
+  padding: 10px;
+  box-shadow: var(--shadow-soft);
+  border: 1px solid var(--color-border-card);
+  max-height: 120px;
+  overflow-y: auto;
+  font-size: 11px;
+  line-height: 1.5;
+  color: var(--color-text-main);
+  margin-bottom: 12px;
+}
+
+.combat-log-entry {
+  border-bottom: 1px solid var(--color-surface-container);
+  padding: 4px 0;
+}
+
+.victory-box {
+  display: none;
+  background: #ecfdf5;
+  border: 1px solid #10b981;
+  padding: 14px;
+  border-radius: var(--radius-md);
+  text-align: center;
+  margin-top: 10px;
+}
+
+/* ===================================================
+   9. BOTTINO E RICOMPENSE (4.5)
+   =================================================== */
+.loot-chest-visual {
+  background: linear-gradient(135deg, #1e293b, #0f172a);
+  border-radius: var(--radius-lg);
+  padding: 18px;
+  text-align: center;
+  color: #ffffff;
+  box-shadow: var(--shadow-soft);
+  margin-bottom: 12px;
+}
+
+.loot-chest-icon {
+  font-size: 36px;
+  color: #fbbf24;
+  margin-bottom: 6px;
+}
+
+.currency-row {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.currency-pill {
+  flex: 1;
+  background: #ffffff;
+  padding: 8px;
+  border-radius: var(--radius-md);
+  text-align: center;
+  border: 1px solid var(--color-border-card);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.item-loot-card {
+  background: #ffffff;
+  border-radius: var(--radius-md);
+  padding: 10px 12px;
+  margin-bottom: 8px;
+  border: 1px solid var(--color-border-card);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.item-loot-info h4 {
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.item-loot-info p {
+  font-size: 10px;
+  color: var(--color-text-muted);
+}
+
+.encumbrance-bar-card {
+  background: var(--color-surface-container);
+  padding: 10px;
+  border-radius: var(--radius-md);
+  margin-bottom: 14px;
+  font-size: 11px;
+}
+
+/* ===================================================
+   10. SCHEDA PERSONAGGIO (4.6)
+   =================================================== */
+.character-profile-card {
+  background: #ffffff;
+  border-radius: var(--radius-lg);
+  padding: 16px;
+  box-shadow: var(--shadow-soft);
+  border: 1px solid var(--color-border-card);
+  margin-bottom: 14px;
+  text-align: center;
+}
+
+.character-avatar-ring {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: var(--color-surface-container);
+  margin: 0 auto 8px auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid var(--color-amber);
+}
+
+.stat-scores-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.stat-box {
+  background: var(--color-surface-low);
+  padding: 8px;
+  border-radius: var(--radius-md);
+  text-align: center;
+  border: 1px solid var(--color-border-card);
+}
+
+.stat-abbr {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+}
+
+.stat-num {
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--color-text-main);
+}
+
+.stat-mod {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--color-violet);
+}
+
+.skills-card {
+  background: #ffffff;
+  border-radius: var(--radius-md);
+  padding: 12px;
+  box-shadow: var(--shadow-soft);
+  border: 1px solid var(--color-border-card);
+  margin-bottom: 14px;
+}
+
+.skill-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 4px 0;
+  font-size: 12px;
+  border-bottom: 1px solid var(--color-surface-container);
+}
+
+/* ===================================================
+   11. INVENTARIO & PAPER-DOLL (4.7)
+   =================================================== */
+.paper-doll-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.slot-card {
+  background: #ffffff;
+  border: 1px solid var(--color-border-card);
+  border-radius: var(--radius-md);
+  padding: 10px;
+  box-shadow: var(--shadow-soft);
+}
+
+.slot-name {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--color-text-dim);
+  text-transform: uppercase;
+}
+
+.slot-item-title {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--color-text-main);
+  margin: 2px 0;
+}
+
+.slot-item-meta {
+  font-size: 10px;
+  color: var(--color-text-muted);
+}
+
+.inventory-filter-pills {
+  display: flex;
+  gap: 5px;
+  overflow-x: auto;
+  padding-bottom: 8px;
+  margin-bottom: 10px;
+}
+
+.filter-pill {
+  background: #ffffff;
+  border: 1px solid var(--color-border-card);
+  padding: 5px 10px;
+  border-radius: var(--radius-full);
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  white-space: nowrap;
+}
+
+.filter-pill.active {
+  background: var(--color-dark-panel);
+  color: #ffffff;
+  border-color: var(--color-dark-panel);
+}
+
+.inventory-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.inv-item-card {
+  background: #ffffff;
+  border-radius: var(--radius-md);
+  padding: 10px 12px;
+  border: 1px solid var(--color-border-card);
+  box-shadow: var(--shadow-soft);
+}
+
+.inv-item-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+}
+
+.inv-item-actions {
+  display: flex;
+  gap: 4px;
+  margin-top: 6px;
+}
+
+.btn-item-action {
+  background: var(--color-surface-container);
+  padding: 4px 8px;
+  border-radius: var(--radius-sm);
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--color-text-main);
+}
+
+.ai-assistant-card {
+  background: #ffffff;
+  border-radius: var(--radius-lg);
+  padding: 12px;
+  box-shadow: var(--shadow-soft);
+  border: 1px solid var(--color-border-card);
+  margin-bottom: 14px;
+}
+
+.ai-chat-response {
+  background: var(--color-surface-low);
+  padding: 8px 10px;
+  border-radius: var(--radius-md);
+  font-size: 11px;
+  line-height: 1.45;
+  color: var(--color-text-main);
+  margin-bottom: 8px;
+}
+
+/* ===================================================
+   12. IMPOSTAZIONI E REGOLE (4.8)
+   =================================================== */
+.settings-group {
+  background: #ffffff;
+  border-radius: var(--radius-lg);
+  padding: 14px;
+  box-shadow: var(--shadow-soft);
+  border: 1px solid var(--color-border-card);
+  margin-bottom: 12px;
+}
+
+.settings-group-title {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--color-text-main);
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.setting-item {
+  margin-bottom: 10px;
+}
+
+.setting-item:last-child {
+  margin-bottom: 0;
+}
+
+.setting-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  margin-bottom: 4px;
+  display: block;
+}
+
+.setting-select {
+  width: 100%;
+}
+
+.seed-input-wrap {
+  display: flex;
+  gap: 6px;
+}
+
+/* Notifica Toast Fluttuante */
+#toast-notification {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%) translateY(80px);
+  background: #111827;
+  color: #ffffff;
+  padding: 10px 18px;
+  border-radius: var(--radius-full);
+  font-size: 12px;
+  font-weight: 600;
+  box-shadow: var(--shadow-elevated);
+  z-index: 100;
+  opacity: 0;
+  pointer-events: none;
+  transition: transform 0.25s ease, opacity 0.25s ease;
+  white-space: nowrap;
+}
+
+#toast-notification.show {
+  transform: translateX(-50%) translateY(0);
+  opacity: 1;
+}

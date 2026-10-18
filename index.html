@@ -1,0 +1,880 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>Dungeon Storyteller — Grimorio Narrativo AI</title>
+
+  <!-- Google Fonts: Inter per la leggibilità, Cinzel per i titoli fantasy e Material Symbols per le icone -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Inter:wght@400;500;600;700&family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..24,400..600,0..1,0&display=swap" rel="stylesheet">
+
+  <!-- Foglio di Stile Esterno -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Contenitore Principale Mobile dell'App -->
+  <div id="app-container">
+
+    <!-- Notifica Toast per Feedback Azioni -->
+    <div id="toast-notification">Salvataggio completato nel Grimorio!</div>
+
+    <!-- Barra di Navigazione Rapida (Visibile nelle schermate secondarie) -->
+    <nav id="sub-nav" style="display: none;">
+      <button class="sub-nav-back-btn" id="btn-subnav-back" type="button">
+        <span class="icon">arrow_back</span>
+        <span>Torna</span>
+      </button>
+      <div class="sub-nav-left" id="sub-nav-title">CRIPTA</div>
+      <div class="sub-nav-tabs">
+        <button class="sub-nav-tab-btn" id="tab-btn-game" title="Gioco"><span class="icon">auto_stories</span></button>
+        <button class="sub-nav-tab-btn" id="tab-btn-combat" title="Combattimento"><span class="icon">swords</span></button>
+        <button class="sub-nav-tab-btn" id="tab-btn-sheet" title="Scheda"><span class="icon">person</span></button>
+        <button class="sub-nav-tab-btn" id="tab-btn-inv" title="Inventario"><span class="icon">backpack</span></button>
+        <button class="sub-nav-tab-btn" id="tab-btn-settings" title="Regole"><span class="icon">settings</span></button>
+      </div>
+    </nav>
+
+    <!-- ========================================================
+         SCHERMATA 4.1: HOME SCREEN (HUB PRINCIPALE)
+         ======================================================== -->
+    <main class="screen active" id="screen-home">
+
+      <!-- Status Micro-Header -->
+      <header class="status-micro-header">
+        <div class="live-badge">
+          <div class="live-dot-wrap">
+            <div class="live-dot-pulse"></div>
+            <div class="live-dot"></div>
+          </div>
+          <span>LIVE • MOTORE NARRATIVO AI ATTIVO</span>
+        </div>
+        <div class="version-pill">
+          <span class="icon">token</span>
+          <span>v2.4.8-AI</span>
+        </div>
+      </header>
+
+      <!-- Hero Header / Titolo -->
+      <section class="hero-header">
+        <div class="hero-pretitle">
+          <span class="icon">auto_awesome</span>
+          <span>Grimorio Procedurale</span>
+          <span class="icon">auto_awesome</span>
+        </div>
+        <h1 class="hero-title">Dungeon Storyteller</h1>
+        <p class="hero-subtitle">Generatore di Avventure e Ruolo Procedurale</p>
+      </section>
+
+      <!-- Finestra Diegetica ad Arco Gotico (Varco Runico) -->
+      <section class="portal-card">
+        <!-- Rivetti d'angolo metallici -->
+        <span class="rivet rivet-tl"></span>
+        <span class="rivet rivet-tr"></span>
+        <span class="rivet rivet-bl"></span>
+        <span class="rivet rivet-br"></span>
+
+        <div class="portal-image-container">
+          <img class="portal-img" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDv6UHJ7gwOxZLDZSDXBuZDgE6qMDsiOkktoo83Va5RY9uR9lceAowc5Auw3dzhKbOZHUxyuGhO_pcftLtiaLgnpvW2Q21cCV7J6NE4PRdeCqfVn9uD1c5A1wmiL_k83eAhHKCiyDgKUzkvcbgcCBDOvsJlMFauLJImN_y7nEoGBpT-DsWU5BV66Go2Y3HPsO6geXXzbs50auL8K5n1M5QvXn8ffckgXhCwUu6e4MD-PU9T2r7OYkfJ" alt="Varco Runico Gotico Luminoso">
+          <div class="portal-vignette"></div>
+
+          <!-- Badge superiore -->
+          <div class="portal-badge-top">
+            <span class="icon">magic_button</span>
+            <span>VARCO RUNICO APERTO</span>
+          </div>
+
+          <!-- Overlay inferiore con coordinate e difficoltà -->
+          <div class="portal-footer-overlay">
+            <div class="portal-zone">
+              <span class="icon">explore</span>
+              <span>Faglia di Aethelgard • Cripta I</span>
+            </div>
+            <span class="difficulty-badge">Difficoltà: Letale</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Intro Pitch -->
+      <section class="pitch-banner">
+        <p>Crea storie aperte, esplora mondi interattivi ed affronta il fato guidato in tempo reale dal <strong>Master AI</strong>.</p>
+      </section>
+
+      <!-- Card Ripresa Rapida ("Ultima Avventura Sospesa") -->
+      <section class="resume-card">
+        <span class="rivet rivet-tr"></span>
+        <span class="rivet rivet-bl"></span>
+        <div class="resume-card-header">
+          <div class="resume-tag">
+            <span class="icon">history_edu</span>
+            <span>Ultima Avventura Sospesa</span>
+          </div>
+          <span class="turn-pill" id="home-turn-pill">Turno 08</span>
+        </div>
+        <div class="resume-body">
+          <div>
+            <h2 class="resume-hero-title">Valerius — Cripta Sotterranea</h2>
+            <p class="resume-hero-desc">Rifugio trovato dietro il sarcofago antico...</p>
+          </div>
+          <button class="btn-gold-compact" id="btn-resume-adventure" type="button">
+            <span>Continua</span>
+            <span class="icon">arrow_forward</span>
+          </button>
+        </div>
+      </section>
+
+      <!-- Navigazione Cardinale (Menu Principale) -->
+      <nav class="menu-actions">
+        <!-- Bottone Primario Forgiato -->
+        <button class="btn-hero-forged" id="btn-new-character" type="button">
+          <span class="rivet rivet-dark rivet-tl"></span>
+          <span class="rivet rivet-dark rivet-tr"></span>
+          <span class="rivet rivet-dark rivet-bl"></span>
+          <span class="rivet rivet-dark rivet-br"></span>
+          <div class="forged-title-row">
+            <div class="forged-title">
+              <span class="icon">person_add</span>
+              <span>INIZIO NUOVO PERSONAGGIO [+]</span>
+            </div>
+            <span class="icon">swords</span>
+          </div>
+          <p class="forged-desc">Crea una nuova scheda avventuriero, definisci classe, abilità e background iniziale con il Master AI.</p>
+        </button>
+
+        <!-- Scheda Carica Personaggi -->
+        <button class="btn-chiseled-slate" id="btn-load-character" type="button">
+          <span class="rivet rivet-tl"></span>
+          <span class="rivet rivet-tr"></span>
+          <div class="chiseled-top-row">
+            <div class="chiseled-label">
+              <span class="icon" style="color: var(--color-violet);">group</span>
+              <span>Carica Personaggi</span>
+            </div>
+            <span class="counter-chip">2 Salvati</span>
+          </div>
+          <div class="chiseled-bottom-row">
+            <p class="chiseled-desc">Riprendi una campagna • Valerius (Lv. 3), Morgana (Lv. 2)</p>
+            <span class="icon">chevron_right</span>
+          </div>
+        </button>
+
+        <!-- Scheda Impostazioni & Regole -->
+        <button class="btn-chiseled-slate" id="btn-open-settings" type="button">
+          <span class="rivet rivet-tl"></span>
+          <span class="rivet rivet-tr"></span>
+          <div class="chiseled-top-row">
+            <div class="chiseled-label">
+              <span class="icon" style="color: var(--color-amber);">tune</span>
+              <span>Impostazioni & Regole</span>
+            </div>
+            <span class="icon">settings</span>
+          </div>
+          <div class="chiseled-bottom-row">
+            <p class="chiseled-desc">Prompt AI Master, regole SRD 5e, audio narrativo e densità.</p>
+            <span class="icon">chevron_right</span>
+          </div>
+        </button>
+
+        <!-- Scheda Esci dal Gioco -->
+        <button class="btn-chiseled-slate btn-exit-game" id="btn-exit-game" type="button">
+          <span class="rivet rivet-tl"></span>
+          <span class="rivet rivet-tr"></span>
+          <div class="chiseled-top-row">
+            <div class="chiseled-label">
+              <span class="icon" style="color: var(--color-ruby);">door_front</span>
+              <span>Esci dal Gioco</span>
+            </div>
+            <span class="counter-chip">[ SALVA & ESCI ]</span>
+          </div>
+          <div class="chiseled-bottom-row">
+            <p class="chiseled-desc">Chiudi la sessione corrente con salvataggio rapido in cloud.</p>
+            <span class="icon">logout</span>
+          </div>
+        </button>
+      </nav>
+
+      <!-- Pannello Diagnostica Motore & Archivio (Griglia 2x2) -->
+      <section class="diagnostic-panel">
+        <span class="rivet rivet-tl"></span>
+        <span class="rivet rivet-tr"></span>
+        <span class="rivet rivet-bl"></span>
+        <span class="rivet rivet-br"></span>
+        <div class="diagnostic-title">
+          <span class="icon">terminal</span>
+          <span>DIAGNOSTICA MOTORE & ARCHIVIO</span>
+        </div>
+        <div class="diagnostic-grid">
+          <div class="diagnostic-cell">
+            <span class="diag-label">Motore Regole</span>
+            <div class="diag-val">
+              <span class="icon" style="color: var(--color-amber);">menu_book</span>
+              <span>SRD 5e Standard</span>
+            </div>
+          </div>
+          <div class="diagnostic-cell">
+            <span class="diag-label">Latenza Master</span>
+            <div class="diag-val">
+              <span class="live-dot" style="display:inline-block;"></span>
+              <span>140ms • Ottimale</span>
+            </div>
+          </div>
+          <div class="diagnostic-cell">
+            <span class="diag-label">Archivio Cloud</span>
+            <div class="diag-val">
+              <span class="icon" style="color: var(--color-violet);">cloud_done</span>
+              <span>Sincronizzato</span>
+            </div>
+          </div>
+          <div class="diagnostic-cell">
+            <span class="diag-label">Seed Procedurale</span>
+            <div class="diag-val">
+              <span class="icon" style="color: var(--color-amber);">casino</span>
+              <span id="home-seed-label">#9402-A</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Note di Chiusura e Copyright -->
+      <footer class="game-footer">
+        <p>DUNGEON STORYTELLER RPG • © 2025 - Esperienza Narrativa Procedurale Immersiva</p>
+      </footer>
+    </main>
+
+    <!-- ========================================================
+         SCHERMATA 4.2: SCHERMATA DI GIOCO (CORE NARRATIVE)
+         ======================================================== -->
+    <section class="screen" id="screen-game">
+
+      <!-- Top Bar Compatta Personaggio -->
+      <header class="hero-top-bar">
+        <div class="hero-stats-row">
+          <div class="hero-identity">
+            <span class="icon" style="color: var(--color-amber);">shield_person</span>
+            <span id="topbar-hero-name">Valerius</span>
+            <span style="font-size: 11px; color: var(--color-text-muted);">(Lv. 3)</span>
+          </div>
+          <div class="hero-ac-badge" id="topbar-ac">CA 14</div>
+        </div>
+        <div class="hero-vitals-row">
+          <div class="vital-item">
+            <div class="vital-label">
+              <span>Punti Ferita (HP)</span>
+              <span id="topbar-hp-text">24 / 28</span>
+            </div>
+            <div class="progress-bar-bg">
+              <div class="progress-bar-fill-hp" id="topbar-hp-bar" style="width: 85%;"></div>
+            </div>
+          </div>
+          <div>
+            <div class="vital-label">
+              <span>Slot Incantesimi</span>
+            </div>
+            <div class="spell-slots-row" id="topbar-spell-slots">
+              <span class="spell-slot-dot"></span>
+              <span class="spell-slot-dot"></span>
+              <span class="spell-slot-dot empty"></span>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <!-- Riquadro di Scena Diegetica -->
+      <div class="scene-frame">
+        <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuDv6UHJ7gwOxZLDZSDXBuZDgE6qMDsiOkktoo83Va5RY9uR9lceAowc5Auw3dzhKbOZHUxyuGhO_pcftLtiaLgnpvW2Q21cCV7J6NE4PRdeCqfVn9uD1c5A1wmiL_k83eAhHKCiyDgKUzkvcbgcCBDOvsJlMFauLJImN_y7nEoGBpT-DsWU5BV66Go2Y3HPsO6geXXzbs50auL8K5n1M5QvXn8ffckgXhCwUu6e4MD-PU9T2r7OYkfJ" alt="Scena Cripta Sotterranea">
+        <div class="scene-frame-overlay">
+          <span class="scene-tag"><span class="icon">location_on</span> Cripta di Aethelgard • Profondità I</span>
+          <span class="scene-tag" style="color:#fbbf24;"><span class="icon">priority_high</span> Pericolo Vicino</span>
+        </div>
+      </div>
+
+      <!-- Log Narrativo Dinamico -->
+      <article class="narrative-card">
+        <div class="narrative-header">
+          <div class="narrative-title">
+            <span class="icon">neurology</span>
+            <span>Master AI Narratore</span>
+          </div>
+          <button class="btn-log-history" id="btn-toggle-history" type="button">
+            <span class="icon">history</span>
+            <span>Storico Turni</span>
+          </button>
+        </div>
+        <p class="narrative-text" id="narrative-text">
+          Le torce stillano resina sulfurea lungo le pareti ricoperte di muschio umido. Al centro della sala mortuaria troneggia un sarcofago in basalto decorato con bassorilievi lunari. Un ronzio necromantico a bassa frequenza fa vibrare la polvere del pavimento. Davanti a te, oltre la soglia del sepolcro, un cigolio sinistro rivela che qualcosa si è destato.
+        </p>
+      </article>
+
+      <!-- Scelte a Bivi (Branching Options con CD) -->
+      <section class="branch-choices-section">
+        <button class="branch-btn" id="btn-choice-a" type="button">
+          <span class="branch-btn-text"><strong>[A]</strong> Esamina le rune sul sarcofago con il simbolo sacro di Selûne</span>
+          <span class="branch-dc-badge">Religione CD 12</span>
+        </button>
+        <button class="branch-btn" id="btn-choice-b" type="button">
+          <span class="branch-btn-text"><strong>[B]</strong> Forza la cerniera in ferro battuto del sepolcro</span>
+          <span class="branch-dc-badge">Atletica CD 14</span>
+        </button>
+        <button class="branch-btn" id="btn-choice-c" type="button">
+          <span class="branch-btn-text"><strong>[C]</strong> Impugna la Mazza Benedicta e sfida l'ombra nell'angolo</span>
+          <span class="branch-dc-badge" style="background:#fee2e2; color:#b91c1c;">Combattimento</span>
+        </button>
+      </section>
+
+      <!-- Casella Prompt Libero -->
+      <section class="free-prompt-card">
+        <label class="free-prompt-title" for="input-free-action">
+          <span class="icon">edit_note</span>
+          <span>Azione Libera non Predeterminata:</span>
+        </label>
+        <div class="prompt-input-row">
+          <input class="prompt-input" id="input-free-action" type="text" placeholder="Es: 'Accendo una torcia e lancio un sasso nel corridoio'...">
+          <button class="btn-submit-action" id="btn-send-free-action" type="button">
+            <span>Invia</span>
+            <span class="icon">send</span>
+          </button>
+        </div>
+      </section>
+
+      <!-- Scorciatoie Rapide -->
+      <section class="quick-mode-switch-grid">
+        <button class="btn-mode-quick" id="btn-goto-combat" type="button">
+          <span class="icon" style="color: var(--color-ruby);">swords</span>
+          <span>Ingaggia Scontro</span>
+        </button>
+        <button class="btn-mode-quick" id="btn-goto-loot" type="button">
+          <span class="icon" style="color: var(--color-amber);">treasure_chest</span>
+          <span>Vedi Bottino</span>
+        </button>
+      </section>
+    </section>
+
+    <!-- ========================================================
+         SCHERMATA 4.4: COMBATTIMENTO A TURNI (TACTICAL COMBAT)
+         ======================================================== -->
+    <section class="screen" id="screen-combat">
+
+      <!-- Scheda Nemico Generato -->
+      <article class="enemy-card">
+        <span class="rivet rivet-tl"></span>
+        <span class="rivet rivet-tr"></span>
+        <div class="enemy-header">
+          <div class="enemy-title">
+            <span class="icon">skull</span>
+            <span id="enemy-name">Guardiano d'Ossa</span>
+          </div>
+          <span class="enemy-cr-badge" id="enemy-cr">CR 1 (Grado 1)</span>
+        </div>
+        <div class="vital-label">
+          <span>Stato Ferite Nemico</span>
+          <span id="enemy-hp-text">22 / 22 HP</span>
+        </div>
+        <div class="progress-bar-bg" style="margin-bottom: 6px;">
+          <div class="progress-bar-fill-hp" id="enemy-hp-bar" style="width: 100%; background: linear-gradient(to right, #ef4444, #f87171);"></div>
+        </div>
+        <p style="font-size: 11px; color: var(--color-text-muted);">Difesa CA: 13 • Debolezza: Danni Radiosi</p>
+      </article>
+
+      <!-- Track Iniziativa Round -->
+      <div class="initiative-track-card">
+        <div style="display: flex; align-items: center; gap: 6px;">
+          <span class="icon" style="color: var(--color-violet);">format_list_numbered</span>
+          <span>Ordine Turni:</span>
+        </div>
+        <div style="display: flex; gap: 6px;">
+          <span class="turn-indicator-badge">1. Valerius (Tu)</span>
+          <span style="color: var(--color-text-muted); font-size: 10px; align-self: center;">➔ 2. Guardiano</span>
+        </div>
+      </div>
+
+      <!-- Griglia Azioni di Combattimento -->
+      <section class="combat-grid">
+        <!-- 1. Attacco Primario -->
+        <button class="combat-action-btn" id="btn-combat-attack" type="button">
+          <div class="combat-btn-title">
+            <span class="icon" style="color: var(--color-amber);">sports_martial_arts</span>
+            <span>Attacco Primario</span>
+          </div>
+          <span class="combat-btn-subtitle">Mazza d'Acciaio (1d6+2 Danni)</span>
+        </button>
+
+        <!-- 2. Lancio Incantesimi -->
+        <button class="combat-action-btn" id="btn-combat-spell" type="button">
+          <div class="combat-btn-title">
+            <span class="icon" style="color: var(--color-violet);">local_fire_department</span>
+            <span>Lancia Incantesimo</span>
+          </div>
+          <span class="combat-btn-subtitle">Dardo Guida (Slot Lv 1)</span>
+        </button>
+
+        <!-- 3. Azione Bonus -->
+        <button class="combat-action-btn" id="btn-combat-bonus" type="button">
+          <div class="combat-btn-title">
+            <span class="icon" style="color: var(--color-emerald);">healing</span>
+            <span>Azione Bonus</span>
+          </div>
+          <span class="combat-btn-subtitle">Bevi Pozione Rapida (+6 HP)</span>
+        </button>
+
+        <!-- 4. Manovra Tattica -->
+        <button class="combat-action-btn" id="btn-combat-tactical" type="button">
+          <div class="combat-btn-title">
+            <span class="icon" style="color: #3b82f6;">shield</span>
+            <span>Manovra Tattica</span>
+          </div>
+          <span class="combat-btn-subtitle">Schivata / Difesa Totale</span>
+        </button>
+      </section>
+
+      <!-- Combat Log Round-by-Round -->
+      <div class="combat-log-box" id="combat-log-box">
+        <div class="combat-log-entry"><strong>Inizio scontro:</strong> Il Guardiano d'Ossa solleva la scimitarra intrisa di polvere funebre!</div>
+      </div>
+
+      <!-- Box Vittoria Scontro -->
+      <div class="victory-box" id="victory-box">
+        <h3 style="color: #065f46; font-size: 14px; margin-bottom: 4px;">VITTORIA TATTICA!</h3>
+        <p style="font-size: 12px; color: #047857; margin-bottom: 10px;">Il Guardiano d'Ossa si disintegra in frammenti di calce. Guadagni +100 PE!</p>
+        <button class="btn-gold-compact" id="btn-victory-loot" type="button" style="margin: 0 auto;">
+          <span>Raccogli Spoglie & Bottino ➔</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- ========================================================
+         SCHERMATA 4.5: BOTTINO E RICOMPENSE (LOOT SCREEN)
+         ======================================================== -->
+    <section class="screen" id="screen-loot">
+      <div class="loot-chest-visual">
+        <div class="loot-chest-icon">
+          <span class="icon" style="font-size: 42px;">treasure_chest</span>
+        </div>
+        <h2 style="font-family: var(--font-fantasy); font-size: 18px;">Scrigno della Cripta Rivelato</h2>
+        <p style="font-size: 11px; opacity: 0.85;">Hai aperto il forziere celato nel sepolcro antico.</p>
+      </div>
+
+      <!-- Valute Recuperate -->
+      <div class="currency-row">
+        <div class="currency-pill" style="color: #d97706;">
+          <span class="icon">toll</span>
+          <div>45 MO</div>
+          <small style="font-size: 9px; color: var(--color-text-muted);">Monete d'Oro</small>
+        </div>
+        <div class="currency-pill" style="color: #64748b;">
+          <span class="icon">monetization_on</span>
+          <div>120 MA</div>
+          <small style="font-size: 9px; color: var(--color-text-muted);">Monete d'Argento</small>
+        </div>
+        <div class="currency-pill" style="color: #b45309;">
+          <span class="icon">circle</span>
+          <div>15 MR</div>
+          <small style="font-size: 9px; color: var(--color-text-muted);">Monete di Rame</small>
+        </div>
+      </div>
+
+      <!-- Elenco Oggetti Rinvenuti -->
+      <div style="font-size: 12px; font-weight: 700; margin-bottom: 8px;">Spoglie Trovate:</div>
+      <div id="loot-items-container">
+        <div class="item-loot-card">
+          <div class="item-loot-info">
+            <h4>Pergamena di Selûne</h4>
+            <p>Rarità: Rara • 1 Slot • Magia Divina Scaccia-Morti</p>
+          </div>
+          <button class="btn-item-action" onclick="app.lootSingleItem('Pergamena di Selûne', this)" type="button">Prendi</button>
+        </div>
+        <div class="item-loot-card">
+          <div class="item-loot-info">
+            <h4>Gemma d'Ametista delle Cripte</h4>
+            <p>Rarità: Non comune • 1 Slot • Valore 50 MO</p>
+          </div>
+          <button class="btn-item-action" onclick="app.lootSingleItem('Gemma d\'Ametista', this)" type="button">Prendi</button>
+        </div>
+        <div class="item-loot-card">
+          <div class="item-loot-info">
+            <h4>Pozione di Guarigione Maggiore</h4>
+            <p>Rarità: Non comune • 1 Slot • Ripristina 4d4+4 HP</p>
+          </div>
+          <button class="btn-item-action" onclick="app.lootSingleItem('Pozione di Guarigione M.', this)" type="button">Prendi</button>
+        </div>
+      </div>
+
+      <!-- Monitoraggio Ingombro Zaino -->
+      <div class="encumbrance-bar-card">
+        <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
+          <span>Ingombro Zaino:</span>
+          <span id="loot-encumbrance-text">14 / 20 Slot Utilizzati (70%)</span>
+        </div>
+        <div class="progress-bar-bg">
+          <div class="progress-bar-fill-hp" style="width: 70%; background: var(--color-amber);"></div>
+        </div>
+      </div>
+
+      <!-- Bottoni Azione Bottino -->
+      <div style="display: flex; flex-direction: column; gap: 8px;">
+        <button class="btn-gold-compact" id="btn-loot-all" type="button" style="justify-content: center; padding: 12px;">
+          <span class="icon">inventory_2</span>
+          <span>Raccogli Tutto nello Zaino</span>
+        </button>
+        <button class="btn-chiseled-slate" id="btn-loot-to-inventory" type="button" style="text-align: center;">
+          <span style="font-weight: 700; font-size: 12px;">Gestisci Zaino ed Equipaggiamento ➔</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- ========================================================
+         SCHERMATA 4.6: SCHEDA PERSONAGGIO (CHARACTER SHEET)
+         ======================================================== -->
+    <section class="screen" id="screen-sheet">
+      <!-- Identità dell'Eroe -->
+      <article class="character-profile-card">
+        <div class="character-avatar-ring">
+          <span class="icon" style="font-size: 34px; color: var(--color-amber);">person</span>
+        </div>
+        <h2 style="font-family: var(--font-fantasy); font-size: 18px;" id="sheet-hero-name">Valerius</h2>
+        <p style="font-size: 12px; color: var(--color-text-muted);">Chierico di Selûne • Dominio della Luce • 3° Livello</p>
+        <div style="display: flex; justify-content: center; gap: 12px; margin-top: 8px; font-size: 11px; font-weight: 700;">
+          <span>Bonus Competenza: +2</span>
+          <span>Velocità: 9m</span>
+          <span>PE: 1.250 / 2.700</span>
+        </div>
+      </article>
+
+      <!-- Punteggi di Caratteristica (6 Statistiche) -->
+      <div style="font-size: 12px; font-weight: 700; margin-bottom: 6px;">Punteggi di Caratteristica:</div>
+      <div class="stat-scores-grid">
+        <div class="stat-box">
+          <div class="stat-abbr">FOR (Forza)</div>
+          <div class="stat-num">14</div>
+          <div class="stat-mod">+2</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-abbr">DES (Destrezza)</div>
+          <div class="stat-num">10</div>
+          <div class="stat-mod">0</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-abbr">COS (Costituzione)</div>
+          <div class="stat-num">15</div>
+          <div class="stat-mod">+2</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-abbr">INT (Intelligenza)</div>
+          <div class="stat-num">12</div>
+          <div class="stat-mod">+1</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-abbr">SAG (Saggezza)</div>
+          <div class="stat-num">16</div>
+          <div class="stat-mod">+3</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-abbr">CAR (Carisma)</div>
+          <div class="stat-num">13</div>
+          <div class="stat-mod">+1</div>
+        </div>
+      </div>
+
+      <!-- Tiri Salvezza e Abilità Competenti -->
+      <div class="skills-card">
+        <div style="font-size: 12px; font-weight: 700; margin-bottom: 6px;">Competenze e Abilità Addestrate:</div>
+        <div class="skill-row">
+          <span>Religione (Intelligenza)</span>
+          <span style="font-weight: 700; color: var(--color-emerald);">[✓] +5</span>
+        </div>
+        <div class="skill-row">
+          <span>Medicina (Saggezza)</span>
+          <span style="font-weight: 700; color: var(--color-emerald);">[✓] +5</span>
+        </div>
+        <div class="skill-row">
+          <span>Storia (Intelligenza)</span>
+          <span style="font-weight: 700; color: var(--color-emerald);">[✓] +3</span>
+        </div>
+        <div class="skill-row">
+          <span>Intuizione (Saggezza)</span>
+          <span style="font-weight: 700; color: var(--color-emerald);">[✓] +5</span>
+        </div>
+        <div class="skill-row">
+          <span>Atletica (Forza)</span>
+          <span style="font-weight: 700; color: var(--color-text-muted);">[  ] +2</span>
+        </div>
+      </div>
+
+      <!-- Accesso Rapido Equipaggiamento -->
+      <button class="btn-gold-compact" id="btn-sheet-to-inv" type="button" style="justify-content: center; padding: 12px; width: 100%;">
+        <span class="icon">backpack</span>
+        <span>🎒 Gestisci Inventario & Equipaggiamento</span>
+      </button>
+    </section>
+
+    <!-- ========================================================
+         SCHERMATA 4.7: GESTIONE INVENTARIO ED EQUIPAGGIAMENTO
+         ======================================================== -->
+    <section class="screen" id="screen-inventory">
+
+      <!-- Header Finanziario & Ingombro -->
+      <div class="currency-row" style="margin-bottom: 8px;">
+        <div class="currency-pill"><strong>45</strong> MO</div>
+        <div class="currency-pill"><strong>120</strong> MA</div>
+        <div class="currency-pill"><strong>15</strong> MR</div>
+      </div>
+
+      <div class="encumbrance-bar-card" style="margin-bottom: 12px;">
+        <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
+          <span>Capienza Zaino: 14/20 slot (70%)</span>
+          <span style="color: var(--color-emerald); font-weight: 700;">Mobilità Normale</span>
+        </div>
+        <div class="progress-bar-bg">
+          <div class="progress-bar-fill-hp" style="width: 70%; background: var(--color-amber);"></div>
+        </div>
+      </div>
+
+      <!-- Paper-Doll System (Slot Attivi) -->
+      <div style="font-size: 12px; font-weight: 700; margin-bottom: 6px;">Slot Attivi Corpo ed Equipaggiamento:</div>
+      <div class="paper-doll-grid">
+        <div class="slot-card">
+          <span class="slot-name">Mano Destra (Arma)</span>
+          <div class="slot-item-title">Mazza d'Acciaio Benedicta</div>
+          <span class="slot-item-meta">1d6+2 Danni Contundenti</span>
+        </div>
+        <div class="slot-card">
+          <span class="slot-name">Mano Sinistra</span>
+          <div class="slot-item-title" style="color: var(--color-text-dim);">Slot Vuoto</div>
+          <span class="slot-item-meta">Tocca per scudo o torcia</span>
+        </div>
+        <div class="slot-card">
+          <span class="slot-name">Armatura (Corpo)</span>
+          <div class="slot-item-title">Armatura di Maglia</div>
+          <span class="slot-item-meta">Classe Armatura base 14</span>
+        </div>
+        <div class="slot-card">
+          <span class="slot-name">Collo / Reliquia</span>
+          <div class="slot-item-title">Amuleto della Luce</div>
+          <span class="slot-item-meta">+1 Tiri Salvezza Sacri</span>
+        </div>
+      </div>
+
+      <!-- Tasca Rapida Consumabile -->
+      <div class="slot-card" style="margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between;">
+        <div>
+          <span class="slot-name">Tasca Rapida (Uso Immediato)</span>
+          <div class="slot-item-title">Pozione di Guarigione M.</div>
+          <span class="slot-item-meta">Ripristina +8 HP istantanei</span>
+        </div>
+        <button class="btn-gold-compact" id="btn-use-potion-quick" type="button" style="padding: 6px 10px; font-size: 11px;">
+          <span class="icon">healing</span>
+          <span>Usa Ora</span>
+        </button>
+      </div>
+
+      <!-- Filtri Rustici Zaino -->
+      <div class="inventory-filter-pills">
+        <button class="filter-pill active" onclick="app.filterInventory('all', this)" type="button">Tutti (14)</button>
+        <button class="filter-pill" onclick="app.filterInventory('weapons', this)" type="button">Armi & Protezioni (4)</button>
+        <button class="filter-pill" onclick="app.filterInventory('potions', this)" type="button">Consumabili (5)</button>
+        <button class="filter-pill" onclick="app.filterInventory('quest', this)" type="button">Chiavi & Quest (3)</button>
+      </div>
+
+      <!-- Lista Oggetti nello Zaino -->
+      <div class="inventory-list" id="inventory-list-container">
+        <div class="inv-item-card" data-category="weapons">
+          <div class="inv-item-header">
+            <strong>Torcia di Resina (x3)</strong>
+            <span class="counter-chip">1 Slot</span>
+          </div>
+          <p style="font-size: 11px; color: var(--color-text-muted);">Illumina per 6 metri in ambienti ipogei oscuri.</p>
+          <div class="inv-item-actions">
+            <button class="btn-item-action" onclick="app.showToast('Torcia accesa: luce nella cripta!')" type="button">Accendi</button>
+            <button class="btn-item-action" onclick="app.askAiAboutItem('Torcia di Resina')" type="button">Esamina AI</button>
+            <button class="btn-item-action" onclick="app.discardItem(this)" type="button">Scarta</button>
+          </div>
+        </div>
+
+        <div class="inv-item-card" data-category="potions">
+          <div class="inv-item-header">
+            <strong>Boccetta di Olio Sacro</strong>
+            <span class="counter-chip">1 Slot</span>
+          </div>
+          <p style="font-size: 11px; color: var(--color-text-muted);">Consacra un'arma per 1 ora (+1d4 danni radiosi).</p>
+          <div class="inv-item-actions">
+            <button class="btn-item-action" onclick="app.showToast('Mazza consacrata con Olio Sacro!')" type="button">Usa</button>
+            <button class="btn-item-action" onclick="app.askAiAboutItem('Boccetta di Olio Sacro')" type="button">Esamina AI</button>
+            <button class="btn-item-action" onclick="app.discardItem(this)" type="button">Scarta</button>
+          </div>
+        </div>
+
+        <div class="inv-item-card" data-category="quest">
+          <div class="inv-item-header">
+            <strong>Chiave di Ferro Antica</strong>
+            <span class="counter-chip">1 Slot</span>
+          </div>
+          <p style="font-size: 11px; color: var(--color-text-muted);">Porta inciso il sigillo nobiliare della Casa di Aethelgard.</p>
+          <div class="inv-item-actions">
+            <button class="btn-item-action" onclick="app.askAiAboutItem('Chiave di Ferro Antica')" type="button">Esamina AI</button>
+            <button class="btn-item-action" onclick="app.discardItem(this)" type="button">Scarta</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Assistente AI sull'Inventario -->
+      <section class="ai-assistant-card">
+        <div style="font-size: 11px; font-weight: 700; color: var(--color-violet); margin-bottom: 6px; display: flex; align-items: center; gap: 4px;">
+          <span class="icon">psychology</span>
+          <span>Consulente Alchemico & Magico Master AI:</span>
+        </div>
+        <div class="ai-chat-response" id="ai-inventory-response">
+          "Pace a te, Valerius. L'Amuleto al tuo collo riflette la luce di Selûne; se combinato con l'Olio Sacro su una reliquia benedetta, intensifica le difese contro i non-morti."
+        </div>
+        <div class="prompt-input-row">
+          <input class="prompt-input" id="input-ai-inv" type="text" placeholder="Chiedi al Master AI un parere su un oggetto...">
+          <button class="btn-submit-action" id="btn-send-inv-ai" type="button">
+            <span class="icon">chat</span>
+          </button>
+        </div>
+      </section>
+
+      <!-- Tasto di Uscita e Applicazione -->
+      <button class="btn-hero-forged" id="btn-apply-inventory" type="button" style="text-align: center;">
+        <span style="font-weight: 700; font-size: 13px;">Applica Modifiche ed Esci</span>
+      </button>
+    </section>
+
+    <!-- ========================================================
+         SCHERMATA 4.8: IMPOSTAZIONI E REGOLE (GAME CONFIG)
+         ======================================================== -->
+    <section class="screen" id="screen-settings">
+      <div style="font-family: var(--font-fantasy); font-size: 18px; font-weight: 700; margin-bottom: 12px;">Configurazione Grimorio & Regole</div>
+
+      <!-- Personalità Master AI -->
+      <div class="settings-group">
+        <div class="settings-group-title">
+          <span class="icon" style="color: var(--color-violet);">smart_toy</span>
+          <span>Personalità del Master AI</span>
+        </div>
+        <div class="setting-item">
+          <label class="setting-label" for="setting-ai-personality">Tono Narrativo delle Risposte:</label>
+          <select class="setting-select" id="setting-ai-personality">
+            <option value="classic">Classico Epico (Tolkieniano & Solenne)</option>
+            <option value="grimdark">Grimdark Crudo (Realista, Cupo & Spietato)</option>
+            <option value="humor">Umoristico & Canagliesco</option>
+            <option value="srd">Tattico Rigoroso SRD 5e</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Letalità & Permadeath -->
+      <div class="settings-group">
+        <div class="settings-group-title">
+          <span class="icon" style="color: var(--color-ruby);">dangerous</span>
+          <span>Letalità & Rischio della Campagna</span>
+        </div>
+        <div class="setting-item">
+          <label class="setting-label" for="setting-lethality">Regola di Morte:</label>
+          <select class="setting-select" id="setting-lethality">
+            <option value="soft">Modalità Morbida (Svenimento e recupero)</option>
+            <option value="normal" selected>Normale SRD 5e (Tiri contro la Morte)</option>
+            <option value="hardcore">Morte Permanente (Permadeath cancellazione scheda)</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Seed Procedurale del Dungeon -->
+      <div class="settings-group">
+        <div class="settings-group-title">
+          <span class="icon" style="color: var(--color-amber);">casino</span>
+          <span>Dungeon Seed Procedurale</span>
+        </div>
+        <div class="setting-item">
+          <label class="setting-label" for="setting-seed-input">Codice Generatore del Mondo:</label>
+          <div class="seed-input-wrap">
+            <input id="setting-seed-input" type="text" value="#9402-A" style="font-weight: 700; letter-spacing: 0.5px;">
+            <button class="btn-gold-compact" id="btn-regenerate-seed" type="button" style="padding: 8px 12px;">
+              <span class="icon">refresh</span>
+              <span>Rigenera</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Accessibilità & Audio -->
+      <div class="settings-group">
+        <div class="settings-group-title">
+          <span class="icon">tune</span>
+          <span>Accessibilità & Display</span>
+        </div>
+        <div class="setting-item">
+          <label class="setting-label" for="setting-font-size">Dimensione Testo:</label>
+          <input type="range" id="setting-font-size" min="12" max="18" value="14" style="width: 100%;">
+        </div>
+        <div class="setting-item">
+          <label class="setting-label" style="display: flex; align-items: center; justify-content: space-between;">
+            <span>Sintesi Vocale Master (TTS Audio):</span>
+            <input type="checkbox" id="setting-tts" style="width: 18px; height: 18px;">
+          </label>
+        </div>
+      </div>
+
+      <button class="btn-hero-forged" id="btn-save-settings" type="button" style="text-align: center;">
+        <span style="font-weight: 700; font-size: 13px;">Salva Configurazione Regole</span>
+      </button>
+    </section>
+
+    <!-- ========================================================
+         MODALE 4.3: SEQUENZA POST-SCELTA & RISOLUZIONE TIRI
+         ======================================================== -->
+    <div class="modal-overlay" id="modal-dice-resolution">
+      <div class="modal-card">
+        <span class="rivet rivet-tl"></span>
+        <span class="rivet rivet-tr"></span>
+        <span class="rivet rivet-bl"></span>
+        <span class="rivet rivet-br"></span>
+
+        <h3 style="font-family: var(--font-fantasy); font-size: 16px; margin-bottom: 8px;">Risoluzione del Fato</h3>
+
+        <!-- Action Recap -->
+        <div class="action-recap-box" id="dice-action-recap">
+          Azione: Esamina le rune sul sarcofago (Religione CD 12)
+        </div>
+
+        <!-- Animazione Dado D20 -->
+        <div class="dice-visual-wrap">
+          <div class="d20-poly" id="modal-d20-number">14</div>
+        </div>
+
+        <!-- Scomposizione della Formula esplicita -->
+        <div class="dice-formula-text" id="dice-formula-breakdown">
+          d20 (14) + Modificatore (+3) = <strong>Totale 17</strong> vs CD 12
+        </div>
+
+        <!-- Badge Esito -->
+        <div class="result-badge success" id="dice-result-badge">SUCCESSO</div>
+
+        <!-- Conseguenze Immediate -->
+        <div class="immediate-consequences" id="dice-consequences-text">
+          Le rune si illuminano di bianco argenteo: riconosci il sigillo di protezione di Selûne. Scopri uno scomparto segreto e ricevi +50 PE!
+        </div>
+
+        <button class="btn-modal-close" id="btn-close-dice-modal" type="button">Prosegui Avventura</button>
+      </div>
+    </div>
+
+    <!-- MODALE STORICO TURNI -->
+    <div class="modal-overlay" id="modal-history-viewer">
+      <div class="modal-card" style="text-align: left;">
+        <h3 style="font-family: var(--font-fantasy); font-size: 15px; margin-bottom: 10px;">Registro Storico Turni</h3>
+        <div id="history-log-list" style="font-size: 11px; line-height: 1.5; max-height: 220px; overflow-y: auto;">
+          <p><strong>Turno 01:</strong> Ingresso nel vestibolo della Cripta di Aethelgard.</p>
+          <p><strong>Turno 04:</strong> Rilevamento di trappole a filo e disinnesco con esito positivo.</p>
+          <p><strong>Turno 08:</strong> Sosta esplorativa dinanzi al sepolcro centrale in basalto.</p>
+        </div>
+        <button class="btn-modal-close" id="btn-close-history-modal" type="button" style="margin-top: 14px;">Chiudi Registro</button>
+      </div>
+    </div>
+
+  </div> <!-- Fine #app-container -->
+
+  <!-- Collegamento al file JavaScript esterno -->
+  <script src="script.js"></script>
+</body>
+</html>
